@@ -1,7 +1,6 @@
 #include "string.hpp"
 
-#include <istream>
-#include <ostream>
+#include <iostream>
 
 char *String::strncpy(char *dest, const char *src, int n) {
     int i = 0;
@@ -16,6 +15,9 @@ char *String::strncpy(char *dest, const char *src, int n) {
 }
 
 String::String(const char *s) {
+    if (strlen(s) >= MAXLEN) {
+        std::cerr << "ERROR: String Capacity Exceeded." << std::endl;
+    }
     strncpy(buf, s, MAXLEN - 1);
 }
 
@@ -44,8 +46,17 @@ String &String::operator=(const String &s) {
     return *this;
 }
 
-char &String::operator[](int index){
+char &String::operator[](int index) {
+    if (!in_bounds(index)) {
+        std::cerr << "ERROR: Index Out Of Bounds" << std::endl;
+        return buf[0];
+    }
+
     return buf[index];
+}
+
+bool String::in_bounds(int i) const {
+    return i >= 0 && i < size();
 }
 
 int String::strlen(const char *s) {
@@ -205,6 +216,10 @@ String String::operator+(const String &s) const {
 
 String &String::operator+=(const String &s) {
     int remaining = MAXLEN - size() - 1;
+
+    if (s.size() > remaining) {
+        std::cerr << "ERROR: String Capacity Exceeded." << std::endl;
+    }
 
     if (this == &s) {
         String copy(s);

@@ -55,9 +55,7 @@ public:
     // destructor for this string
     ~String();
 
-    bool in_bounds(int i) const {
-        return i >= 0 && i < strlen(buf);
-    }
+    bool in_bounds(int i) const;
 
     // These static helper methods would normally be private,
     // but are made public so that you (and the autograder)
