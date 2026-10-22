@@ -6,6 +6,10 @@
 #include "string.hpp"
 
 
+// Interface behavior is covered by string_gtests.cpp.  The autograder links
+// this file against helper-only mutant implementations, so this file must call
+// only the ten public static helper functions.
+#if 0
 TEST(StringInterface, CStringConstructor) {
     String word("jasonrong");
     EXPECT_EQ(word.size(), 9);
@@ -201,6 +205,7 @@ TEST(StringInterface, ReadAndInputOperatorReadOneWord) {
     second_input >> second;
     EXPECT_TRUE(second == String("bird"));
 }
+#endif
 
 TEST(StringFunction, strlen) {
     EXPECT_EQ(String::strlen(""), 0);
