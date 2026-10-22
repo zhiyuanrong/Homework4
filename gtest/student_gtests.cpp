@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <sstream>
 #include <string>
 
 #include "string.hpp"
@@ -104,4 +105,70 @@ TEST(StringInterface, ReverseHandlesEmptyAndSingleCharacterStrings) {
     String reversed_single = String("x").reverse();
     EXPECT_EQ(reversed_single.size(), 1);
     EXPECT_EQ(reversed_single[0], 'x');
+}
+
+TEST(StringInterface, IndexOfFindsCharactersAndStrings) {
+    String text("hello world");
+
+    EXPECT_EQ(text.indexOf('o'), 4);
+    EXPECT_EQ(text.indexOf('x'), -1);
+    EXPECT_EQ(text.indexOf(String("world")), 6);
+    EXPECT_EQ(text.indexOf(String("cat")), -1);
+}
+
+TEST(StringInterface, ComparisonOperatorsCompareStrings) {
+    String apple("apple");
+    String another_apple("apple");
+    String banana("banana");
+
+    EXPECT_TRUE(apple == another_apple);
+    EXPECT_FALSE(apple != another_apple);
+    EXPECT_TRUE(apple < banana);
+    EXPECT_TRUE(banana > apple);
+    EXPECT_TRUE(apple <= another_apple);
+    EXPECT_TRUE(apple >= another_apple);
+}
+
+TEST(StringInterface, PlusCreatesANewString) {
+    String first("hello");
+    String second(" world");
+    String result = first + second;
+
+    EXPECT_TRUE(result == String("hello world"));
+    EXPECT_TRUE(first == String("hello"));
+    EXPECT_TRUE(second == String(" world"));
+}
+
+TEST(StringInterface, PlusEqualsChangesTheCurrentString) {
+    String word("go");
+    word += String("od");
+    EXPECT_TRUE(word == String("good"));
+
+    String repeat("go");
+    repeat += repeat;
+    EXPECT_TRUE(repeat == String("gogo"));
+}
+
+TEST(StringInterface, PrintAndOutputOperatorWriteTheString) {
+    String word("hello");
+
+    std::ostringstream print_output;
+    word.print(print_output);
+    EXPECT_EQ(print_output.str(), "hello");
+
+    std::ostringstream operator_output;
+    operator_output << word;
+    EXPECT_EQ(operator_output.str(), "hello");
+}
+
+TEST(StringInterface, ReadAndInputOperatorReadOneWord) {
+    String first;
+    std::istringstream first_input("cat dog");
+    first.read(first_input);
+    EXPECT_TRUE(first == String("cat"));
+
+    String second;
+    std::istringstream second_input("bird fish");
+    second_input >> second;
+    EXPECT_TRUE(second == String("bird"));
 }
